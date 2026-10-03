@@ -1,6 +1,6 @@
 # Discovery note - Dhaga & Co.
 
-**Group:** Group 4 - Vikrant Kumar, Aarushi Singhal, Manikandan Prabhu, Saravana Kumar, Shubra Bal
+**Group:** Group 4 - Vikrant Kumar, Aarushi Singhal, Manikandan Prabhu, Saravana Kumar, Shubra Bal  
 **Date:** 2026-10-01 - agreed before first feature commit (`a96c695`)  
 **Status:** Agreed - build Return Intelligence for Neha (Category)  
 **Brief:** `brief/FDE_Academy_Tech_Track_Mini_Project_1_Dhaga_and_Co_Client_Engagement.pdf`
@@ -9,7 +9,7 @@
 
 ## 1. The problem (one sentence, client language)
 
-Returns labelled Other hide the fit and product issues Neha cannot read at scale, so the category team cannot see which SKUs, sizes, and vendors to fix.
+Returns labelled Other hide the fit and product issues Neha cannot read at scale, so the category team cannot see which SKUs, sizes, and vendors to fix, nor trigger timely customer-response actions.
 
 ---
 
@@ -57,6 +57,7 @@ We do not invent rupee impact until Dhaga gives a validated cost per product ret
 - **Primary metric:** Share of "Other" rows that become a validated taxonomy label with a customer quote (auto-approved at >=75%, or decided in Neha's review queue)
 - **Baseline today:** 44% of returns sit in unstructured "Other"; Neha samples a few hundred by hand; no SKU/size/vendor cluster view
 - **Target for MVP proof:** One upload session produces labelled rows, SKU-level clusters with evidence, and a review queue only for rows under 75% or failed validation - no silent wrong labels
+- **Autonomous response policy target:** For eligible cases, send WhatsApp confirmation within <=15 seconds; if no customer response after 4 hours, trigger calling agent; if still no response, auto-accept RTO
 - **Data source they already have:** Returns export with reason dropdown + "Other" free text (MVP uses a synthetic CSV with `return_id`, `sku`, `category`, `vendor`, `size`, `return_reason`, `other_text`; confirm real join fields with Dhaga before pilot)
 
 **Out of MVP scope to claim:** return rate down, repeat purchase up, or CAC down.  
@@ -65,6 +66,8 @@ Those are pilot hypotheses after Dhaga acts on accepted insights and remeasures.
 ---
 
 ## 6. Ranked shortlist (at least four problems)
+
+**Ranking criteria used:** named owner accountability, measurable current pain, data readiness, operability with no ML engineer, and time-to-value in a 2-week pilot.
 
 | Rank | Problem | Owner inside Dhaga & Co. | Why this rank |
 |------|---------|--------------------------|---------------|
@@ -78,10 +81,29 @@ Those are pilot hypotheses after Dhaga acts on accepted insights and remeasures.
 
 ---
 
-## 7. Biggest assumption, and what would prove it wrong
+## 7. What we will build (explicit build statement)
+
+We will build a return-text intelligence and response-routing MVP:
+
+1. Classify "Other" return comments into a fixed taxonomy with confidence and evidence.
+2. Route low-confidence/invalid rows to human review.
+3. Trigger response policy for approved eligible cases: WhatsApp <=15 seconds -> call fallback after 4 hours of no response -> auto-accept RTO if still no response.
+4. Surface SKU/vendor/size action queues and reviewer outcomes in the dashboard.
+
+We will judge MVP success by label coverage, review queue quality, response policy SLA adherence, and operational usability by Category/Listing teams.
+
+---
+
+## 8. Assumptions made (and what would disprove them)
 
 - **Assumption:** A meaningful share of "Other" is specific and repeated (fit, colour, quality), so a fixed taxonomy can be extracted reliably enough for Neha to act.
 - **Falsifier:** A human read of 500-1000 real "Other" comments is mostly vague, **or** model-human agreement is too low for Neha to trust. Then this pick is wrong for v1, and we should say so.
+- **Assumption:** Customers will respond quickly enough to WhatsApp confirmation for the response policy to reduce stalled cases.
+- **Falsifier:** Response rates are too low, call fallback volume is too high, or no-response outcomes do not improve with this sequence.
+- **Assumption:** The 4-hour call fallback window is operationally practical for support/call capacity.
+- **Falsifier:** Call queue saturation, poor connect rates, or operational cost makes the window unsustainable.
+- **Assumption:** Auto-accept RTO after no response is acceptable within Dhaga policy and customer-experience expectations.
+- **Falsifier:** Business/compliance teams reject the policy or it causes adverse CX outcomes above agreed threshold.
 
 **Cheapest test:** Classify a sample file and have a person score label agreement before any catalogue workflow.
 
@@ -90,4 +112,4 @@ Those are pilot hypotheses after Dhaga acts on accepted insights and remeasures.
 ### Constraint reminder (Dev, CTO)
 
 Sixteen engineers, **no ML engineer**. Whatever we build, somebody here has to run it on the Monday after we leave.  
-Labels are internal; catalogue changes stay manual; Neha reviews only rows under 75% or that fail validation.
+Labels are internal; catalogue changes stay manual; Neha reviews rows under 75% or failed validation; approved eligible cases follow the response policy (WhatsApp <=15s -> call after 4h -> auto-accept RTO on no response).

@@ -208,7 +208,26 @@ Build a lightweight internal workflow that converts free-text return reasons int
 
 
 
-## 13) Rollout plan
+## 13) Assumptions made
+
+1. A meaningful share of "Other" comments contains actionable product signals (fit, quality, colour, description mismatch).
+2. The chosen taxonomy is sufficiently expressive for Category/Listing decisions in the pilot category.
+3. Customers can be reached via WhatsApp quickly enough for <=15 second trigger SLA to matter operationally.
+4. A 4-hour no-response window is appropriate for call fallback in this workflow.
+5. Auto-accept RTO after no response aligns with agreed business policy for pilot scope.
+6. Reviewers are available to process uncertain rows without creating a new bottleneck.
+7. Required data fields and joins are available in exports with acceptable quality.
+
+### Assumption falsifiers (what would disprove them)
+
+- Human-vs-model agreement is too low for trusted actioning.
+- Response/call funnel does not improve closure speed versus current flow.
+- No-response policy causes unacceptable CX or refund risk.
+- Reviewer queue volume exceeds team capacity under real load.
+
+---
+
+## 14) Rollout plan
 
 1. **Week 1:** Validate ingestion, taxonomy quality, and review workflow in one category
 2. **Week 2:** Run repeated cycles, measure queue quality and actionability
@@ -218,7 +237,7 @@ Build a lightweight internal workflow that converts free-text return reasons int
 
 
 
-## 14) Acceptance criteria
+## 15) Acceptance criteria
 
 - Upload run produces structured, validated outputs with visible status for every row.
 - Review queue supports approve/edit/dismiss with persistent final label.
